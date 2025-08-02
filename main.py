@@ -25,9 +25,8 @@ def multiply():
     return 0
 
 def main():
-    num1 = int(input())
-    num2 = int(input())
-    base = int(input())
+    str = input()
+    num1, num2, base = map(int, str.split())
 
     print(add(max(num1, num2), min(num1, num2), base))
     print(multiply())
