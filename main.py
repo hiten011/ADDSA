@@ -28,4 +28,7 @@ def main():
     str = input()
     num1, num2, base = map(int, str.split())
 
-    print(add(max(num1, num2), min(num1, num2), base) + " " + multiply() + " " + 0)
+    print(add(max(num1, num2), min(num1, num2), base), multiply(), 0)
+
+if __name__ == "__main__":
+    main()
