@@ -3,7 +3,7 @@ def add(num1, num2, base):
     carry = 0
     power = 1
 
-    while num1 > 0 or num2 > 0:
+    while num1 > 0:
         n1 = num1 % 10
         n2 = num2 % 10
 
