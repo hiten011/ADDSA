@@ -21,14 +21,45 @@ def add(num1, num2, base):
     ans += carry * power
     return ans
 
-def multiply():
-    return 0
+def multiply(num1, num2):
+    if num1 < 10 or num2 < 10:
+        return num1 * num2
 
-def main():
-    str = input()
-    num1, num2, base = map(int, str.split())
+    n = max(len(str(num1)), len(str(num2)))
+    m = n // 2
 
-    print(add(max(num1, num2), min(num1, num2), base), multiply(), 0)
+    # Split the digit sequences
+    high1, low1 = divmod(num1, 10**m)
+    high2, low2 = divmod(num2, 10**m)
 
-if __name__ == "__main__":
-    main()
+    # recursive multiplications
+    z0 = multiply(low1, low2)
+    z1 = multiply((low1 + high1), (low2 + high2))
+    z2 = multiply(high1, high2)
+
+    # Combine results
+    return z2 * 10**(2 * m) + (z1 - z2 - z0) * 10**m + z0
+
+def convert(num, base):
+    ans = 0
+    carry = 0
+    power = 1
+
+    while num > 0:
+        n = num % 10
+        num //= 10
+        total = n + carry
+
+        carry = total // base
+        curSum = total % base
+
+        ans += curSum * power
+        power *= 10
+
+    ans += carry * power
+    return ans
+
+s = input()
+num1, num2, base = map(int, s.split())
+
+print(add(max(num1, num2), min(num1, num2), base), convert(multiply(num1, num2), base), 0)
