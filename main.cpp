@@ -16,7 +16,7 @@ string add(string n1, string n2, int base) {
         idx2--;
 
         int sum = (temp1 + temp2 + carry) % base;
-        carry = (temp1 + temp2) / base;
+        carry = (temp1 + temp2 + carry) / base;
 
         ans += (to_string(sum));
     }
