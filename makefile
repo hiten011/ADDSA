@@ -1,2 +1,2 @@
 main:
-	python3 main.py < main.txt
+	g++ main.cpp -o main.out && ./main.out < main.txt
