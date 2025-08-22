@@ -36,9 +36,7 @@ string add(string &n1, string &n2, int base) {
 string sub(string &n1, string &n2, int base) {
     if (n1 == n2) return string("0");
 
-    int idx1 = n1.size() - 1;
-    int idx2 = n2.size() - 1;
-    int borrow = 0;
+    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, borrow = 0;
     string ans;
 
     while (idx1 >= 0 || idx2 >= 0) {
@@ -63,7 +61,7 @@ string sub(string &n1, string &n2, int base) {
     return removeZero(ans);
 }
 
-string multiply(string n1, string n2, int base) {
+string multiply(string &n1, string &n2, int base) {
     if (n1.size() == 1 && n2.size() == 1) {
         string ans = "0";
         int temp1 = getInt(n1[0]);
