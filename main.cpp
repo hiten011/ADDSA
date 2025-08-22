@@ -62,6 +62,7 @@ string sub(string &n1, string &n2, int base) {
 }
 
 string multiply(string &n1, string &n2, int base) {
+    if (n1.size() == 0 || n2.size() == 0) return "0";
     if (n1.size() == 1 && n2.size() == 1) {
         string ans = "0";
         int temp1 = getInt(n1[0]);
@@ -102,6 +103,6 @@ int main() {
 
     cin >> n1 >> n2 >> base;
 
-    cout << add(n1, n2, base) << " " << multiply(n1, n2, base) << endl;
+    cout << add(n1, n2, base) << " " << multiply(n1, n2, base) << " " << "0" << endl;
     return 0;
 }
