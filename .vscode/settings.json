@@ -2,6 +2,7 @@
   "files.associations": {
     "valarray": "cpp",
     "random": "cpp",
-    "format": "cpp"
+    "format": "cpp",
+    "string": "cpp"
   }
 }
