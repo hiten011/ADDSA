@@ -88,14 +88,16 @@ string multiply(string &n1, string &n2, int base) {
     }
     
     int maxLen = max(n1.size(), n2.size());
-    equalDigit(n1, n2);
 
     int k = maxLen / 2;
 
+    equalDigit(n1, n2);
     string a1 = n1.substr(0, k);
     string a0 = n1.substr(k);
     string b1 = n2.substr(0, k);
     string b0 = n2.substr(k);
+    n1 = removeZero(n1);
+    n2 = removeZero(n2);
 
     string z2 = multiply(a1, b1, base);
     string z0 = multiply(a0, b0, base); 
@@ -121,10 +123,9 @@ int main() {
 
     cin >> n1 >> n2 >> base;
 
-    equalDigit(n1, n2);
     string ad = add(n1, n2, base);
     string mul = multiply(n1, n2, base);
 
-    cout << ad << " " << removeZero(mul) << " " << "0" << endl;
+    cout << removeZero(ad) << " " << removeZero(mul) << " " << "0" << endl;
     return 0;
 }
