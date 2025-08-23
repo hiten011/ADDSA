@@ -6,8 +6,8 @@ int getInt(char c) {
 }
 
 string removeZero(string &s) {
-    int idx = 0;
-    while (idx + 1 < s.size() && s[idx] == '0') idx++;
+    int idx = 0, n = s.size();
+    while (idx + 1 < n && s[idx] == '0') idx++;
     return s.substr(idx);
 }
 
@@ -77,6 +77,7 @@ string sub(string &n1, string &n2, int base) {
 }
 
 string multiply(string &n1, string &n2, int base) {
+    if (n1.empty() || n2.empty()) return string("0");
     if (n1.size() == 1 && n2.size() == 1) {
         string ans = "0";
         int temp1 = getInt(n1[0]);
