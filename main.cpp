@@ -153,8 +153,10 @@ class AVLTree {
 
             if (val < curNode->getVal()) {
                 curNode->setLeftNode(insert(val, curNode->getLeftNode()));
-            } else {
+            } else if (val > curNode->getVal()) {
                 curNode->setRightNode(insert(val, curNode->getRightNode()));
+            } else {
+                return curNode;
             }
 
             curNode->setHeight(max(getHeight(curNode->getLeftNode()), getHeight(curNode->getRightNode())) + 1);
