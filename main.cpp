@@ -3,12 +3,13 @@ using namespace std;
 
 class Node {
     private:
-        int val, height;
+        int val;
+        int height;
         Node* left;
         Node* right;
 
     public:
-        Node(int val, Node* left, Node* right): val(val), left(left), right(right), height(1) {}
+        Node(int val, Node* left, Node* right): val(val), height(1), left(left), right(right) {}
         Node(int val): Node(val, nullptr, nullptr) {}
 
         // getters
@@ -18,22 +19,12 @@ class Node {
         Node* getRightNode() { return this->right; }
 
         // setters
-        void setHeight(int height) {
-            this->height = height;
-        }
-
-        void setLeftNode(Node* left) {
-            this->left = left;
-        }
-
-        void setRightNode(Node* right) {
-            this->right = right;
-        }
-
-        void setVal(int val) {
-            this->val = val;
-        }
+        void setHeight(int height) { this->height = height; }
+        void setLeftNode(Node* left) { this->left = left; }
+        void setRightNode(Node* right) { this->right = right; }
+        void setVal(int val) { this->val = val; }
 };
+
 
 class AVLTree {
     public:
