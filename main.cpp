@@ -27,7 +27,8 @@ void equalDigit(string &s1, string &s2) {
 }
 
 string add(string &n1, string &n2, int base) {
-    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, carry = 0;
+    equalDigit(n1, n2);
+    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, carry = 0, sum = 0;
     string ans;
     while (idx1 >= 0 || idx2 >= 0) {
         int temp1 = (idx1 < 0 ? 0 : getInt(n1[idx1]));
@@ -36,8 +37,9 @@ string add(string &n1, string &n2, int base) {
         int temp2 = (idx2 < 0 ? 0 : getInt(n2[idx2]));
         idx2--;
 
-        int sum = (temp1 + temp2 + carry) % base;
-        carry = (temp1 + temp2 + carry) / base;
+        int ps = temp1 + temp2 + carry;
+        sum = ps % base;
+        carry = ps / base;
 
         ans += to_string(sum);
     }
@@ -46,6 +48,30 @@ string add(string &n1, string &n2, int base) {
     reverse(ans.begin(), ans.end());
 
     return removeZero(ans);
+}
+
+string wrongCode(string &n1, string &n2, int base)
+{
+    equalDigit(n1, n2);
+    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, carry = 0, sum = 0;
+    string ans = "0";
+    while (idx1 >= 0 || idx2 >= 0)
+    {
+        temp1 = getInt(n1[idx1]);
+        idx1--;
+
+        temp2 = getInt(n2[idx2]);
+        idx2--;
+
+        int ps = temp1 + temp2 + carry;
+        sum = ps % base;
+        carry = ps / base;
+
+        ans = to_string(sum) + ans;
+    }
+
+    if (carry > 0) ans = to_string(carry) + ans;
+    return ans;
 }
 
 string sub(string &n1, string &n2, int base) {
