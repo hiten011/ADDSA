@@ -3,6 +3,8 @@
     "valarray": "cpp",
     "random": "cpp",
     "format": "cpp",
-    "string": "cpp"
+    "string": "cpp",
+    "iostream": "cpp",
+    "ostream": "cpp"
   }
 }

@@ -1,158 +1,257 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-int getInt(char c) {
-    return (int)(c - '0');
-}
+class Node {
+    private:
+        int val, height;
+        Node* left;
+        Node* right;
 
-string removeZero(string &s) {
-    int idx = 0, n = s.size();
-    while (idx + 1 < n && s[idx] == '0') idx++;
-    return s.substr(idx);
-}
+    public:
+        Node(int val, Node* left, Node* right): val(val), left(left), right(right), height(1) {}
+        Node(int val): Node(val, nullptr, nullptr) {}
 
-void equalDigit(string &s1, string &s2) {
-    int len = abs((int) (s1.size() - s2.size()));
+        // getters
+        int getVal() { return this->val; }
+        int getHeight() { return this->height; }
+        Node* getLeftNode() { return this->left; }
+        Node* getRightNode() { return this->right; }
 
-    string leadZero;
-    leadZero.append(len, '0');
-    
-    if (s1.size() < s2.size()) {
-        leadZero += s1;
-        s1 = leadZero;
-    } else {
-        leadZero += s2;
-        s2 = leadZero;
-    }
-}
-
-string add(string &n1, string &n2, int base) {
-    equalDigit(n1, n2);
-    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, carry = 0, sum = 0;
-    string ans;
-    while (idx1 >= 0 || idx2 >= 0) {
-        int temp1 = (idx1 < 0 ? 0 : getInt(n1[idx1]));
-        idx1--;
-
-        int temp2 = (idx2 < 0 ? 0 : getInt(n2[idx2]));
-        idx2--;
-
-        int ps = temp1 + temp2 + carry;
-        sum = ps % base;
-        carry = ps / base;
-
-        ans += to_string(sum);
-    }
-    
-    ans += (to_string(carry));
-    reverse(ans.begin(), ans.end());
-
-    return removeZero(ans);
-}
-
-string wrongCode(string &n1, string &n2, int base)
-{
-    equalDigit(n1, n2);
-    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, carry = 0, sum = 0;
-    string ans = "0";
-    while (idx1 >= 0 || idx2 >= 0)
-    {
-        int temp1 = getInt(n1[idx1]);
-        idx1--;
-
-        int temp2 = getInt(n2[idx2]);
-        idx2--;
-
-        int ps = temp1 + temp2 + carry;
-        sum = ps % base;
-        carry = ps / base;
-
-        ans = to_string(sum) + ans;
-    }
-
-    if (carry > 0) ans = to_string(carry) + ans;
-    return ans;
-}
-
-string sub(string &n1, string &n2, int base) {
-    if (n1 == n2) return string("0");
-
-    int idx1 = n1.size() - 1, idx2 = n2.size() - 1, borrow = 0;
-    string ans;
-
-    while (idx1 >= 0 || idx2 >= 0) {
-        int temp1 = (idx1 < 0 ? 0 : getInt(n1[idx1]));
-        idx1--;
-
-        int temp2 = (idx2 < 0 ? 0 : getInt(n2[idx2]));
-        idx2--;
-
-        int diff = temp1 - temp2 - borrow;
-        if (diff < 0) {
-            diff += base;
-            borrow = 1;
-        } else {
-            borrow = 0;
+        // setters
+        void setHeight(int height) {
+            this->height = height;
         }
 
-        ans += to_string(diff);
-    }
-
-    reverse(ans.begin(), ans.end());
-    return removeZero(ans);
-}
-
-string multiply(string &n1, string &n2, int base) {
-    if (n1.empty() || n2.empty()) return string("0");
-    if (n1.size() == 1 && n2.size() == 1) {
-        string ans = "0";
-        int temp1 = getInt(n1[0]);
-        for (int i = 0; i < temp1; i++) {
-            ans = add(ans, n2, base);
+        void setLeftNode(Node* left) {
+            this->left = left;
         }
 
-        return ans;
-    }
-    
-    int maxLen = max(n1.size(), n2.size());
+        void setRightNode(Node* right) {
+            this->right = right;
+        }
 
-    int k = maxLen / 2;
+        void setVal(int val) {
+            this->val = val;
+        }
+};
 
-    equalDigit(n1, n2);
-    string a1 = n1.substr(0, k);
-    string a0 = n1.substr(k);
-    string b1 = n2.substr(0, k);
-    string b0 = n2.substr(k);
-    n1 = removeZero(n1);
-    n2 = removeZero(n2);
+class AVLTree {
+    public:
+        void insert(int n) {
+            if (head == nullptr) {
+                head = new Node(n);
+                return;
+            }
 
-    string z2 = multiply(a1, b1, base);
-    string z0 = multiply(a0, b0, base); 
+            head = insert(n, head);
+        }
 
-    string sum_a = add(a1, a0, base);
-    string sum_b = add(b1, b0, base);
-    string z1 = multiply(sum_a, sum_b, base);
+        void remove(int n) {
+            if (head == nullptr) {
+                return;
+            }
 
-    string temp = sub(z1, z2, base);
-    temp = sub(temp, z0, base);
+            head = remove(n, head);
+        }
 
-    z2.append(2 * (maxLen - k), '0');
-    temp.append((maxLen - k), '0');
+        void preOrder(Node* curNode, bool isStart) {
+            if (head == nullptr) {
+                cout << "EMPTY" << endl;
+                return;
+            }
 
-    string res1 = add(z2, temp, base);
-    string result = add(res1, z0, base);
-    return result;
-}
+            if (isStart) {
+                preOrder(head, false);
+                return;
+            } 
+
+            // normal preOrder
+            if (curNode == nullptr) return;
+
+            cout << curNode->getVal() << " ";
+            preOrder(curNode->getLeftNode(), isStart);
+            preOrder(curNode->getRightNode(), isStart);
+        }
+
+        void inOrder(Node *curNode, bool isStart) {
+            if (head == nullptr) {
+                cout << "EMPTY" << endl;
+                return;
+            }
+
+            if (isStart) {
+                inOrder(head, false);
+                return;
+            }
+
+            // normal inOrder
+            if (curNode == nullptr) return;
+
+            inOrder(curNode->getLeftNode(), isStart);
+            cout << curNode->getVal() << " ";
+            inOrder(curNode->getRightNode(), isStart);
+        }
+
+        void postOrder(Node* curNode, bool isStart) {
+            if (head == nullptr) {
+                cout << "EMPTY" << endl;
+                return;
+            }
+
+            if (isStart) {
+                postOrder(head, false);
+                return;
+            } 
+
+            // normal postOrder
+            if (curNode == nullptr) return;
+
+            postOrder(curNode->getLeftNode(), isStart);
+            postOrder(curNode->getRightNode(), isStart);
+            cout << curNode->getVal() << " ";
+        }
+
+        AVLTree(): head(nullptr) {}
+
+    private:
+        Node* head;
+
+        int getHeight(Node *node) {
+            return (node == nullptr ? 0 : node->getHeight());
+        } 
+
+        int getBalancingFactor(Node* node) {
+            if (!node) return 0;
+
+            Node* left = node->getLeftNode();
+            Node* right = node->getRightNode();
+
+            return getHeight(left) - getHeight(right);
+        }
+
+        Node* rightRotate(Node* y) {
+            Node* x = y->getLeftNode();
+            Node* temp = x->getRightNode();
+
+            x->setRightNode(y);
+            y->setLeftNode(temp);
+
+            y->setHeight(max(getHeight(y->getLeftNode()), getHeight(y->getRightNode())) + 1);
+            x->setHeight(max(getHeight(x->getLeftNode()), getHeight(x->getRightNode())) + 1);
+
+            return x;
+        }
+
+        Node* leftRotate(Node* x) {
+            Node* y = x->getRightNode();
+            Node* temp = y->getLeftNode();
+
+            y->setLeftNode(x);
+            x->setRightNode(temp);
+
+            x->setHeight(max(getHeight(x->getLeftNode()), getHeight(x->getRightNode())) + 1);
+            y->setHeight(max(getHeight(y->getLeftNode()), getHeight(y->getRightNode())) + 1);
+
+            return y;
+        }
+
+        Node* insert(int val, Node* curNode) {
+            if (curNode == nullptr) {
+                return new Node(val);
+            }
+
+            if (val < curNode->getVal()) {
+                curNode->setLeftNode(insert(val, curNode->getLeftNode()));
+            } else {
+                curNode->setRightNode(insert(val, curNode->getRightNode()));
+            }
+
+            curNode->setHeight(max(getHeight(curNode->getLeftNode()), getHeight(curNode->getRightNode())) + 1);
+            return rebalanceTree(curNode);
+        }
+
+        Node* remove(int val, Node* curNode) {
+            if (!curNode) {
+                return nullptr;
+            }
+
+            if (curNode->getVal() == val) {
+                // node to delete
+                if (!curNode->getLeftNode() || !curNode->getRightNode()) {
+                    Node* temp = curNode->getLeftNode() ? curNode->getLeftNode() : curNode->getRightNode();
+                    delete curNode;
+                    return temp;
+                } else {
+                    Node* pred = getMax(curNode->getLeftNode());
+                    curNode->setVal(pred->getVal());
+                    curNode->setLeftNode(remove(pred->getVal(), curNode->getLeftNode()));
+                }
+
+            } else if (val < curNode->getVal()) {
+                curNode->setLeftNode(remove(val, curNode->getLeftNode()));
+            } else {
+                curNode->setRightNode(remove(val, curNode->getRightNode()));
+            }
+
+            curNode->setHeight(max(getHeight(curNode->getLeftNode()), getHeight(curNode->getRightNode())) + 1);
+            return rebalanceTree(curNode);
+        }
+
+        Node* getMax(Node* curNode) {
+            if (!curNode) return nullptr;
+            while (curNode->getRightNode()) curNode = curNode->getRightNode();
+            return curNode;
+        }
+
+        Node* rebalanceTree(Node* node) {
+            int bf = getBalancingFactor(node);
+
+            if (bf > 1) {
+                // left-left
+                if (getBalancingFactor(node->getLeftNode()) >= 0) {
+                    return rightRotate(node);
+                } else { // left-right
+                    node->setLeftNode(leftRotate(node->getLeftNode()));
+                    return rightRotate(node);
+                }
+            }
+
+            if (bf < -1) {
+                // right-right
+                if (getBalancingFactor(node->getRightNode()) <= 0) {
+                    return leftRotate(node);
+                } else { // right-left
+                    node->setRightNode(rightRotate(node->getRightNode()));
+                    return leftRotate(node);
+                }
+            }
+            
+            return node;
+        } 
+};
 
 int main() {
-    string n1, n2;
-    int base;
+    AVLTree tree;
+    int n; cin >> n;
+    while (n--) {
+        string comand;
+        cin >> comand;
 
-    cin >> n1 >> n2 >> base;
+        if (comand[0] == 'A') {
+            tree.insert(stoi(comand.substr(1)));
+        } else{
+            tree.remove(stoi(comand.substr(1)));
+        }
+    }
 
-    string ad = add(n1, n2, base);
-    string mul = multiply(n1, n2, base);
+    string fin; cin >> fin;
+    if (fin == "PRE") {
+        tree.preOrder(nullptr, true);
+    } else if (fin == "POST") {
+        tree.postOrder(nullptr, true);
+    } else {
+        tree.inOrder(nullptr, true);
+    }
 
-    cout << removeZero(ad) << " " << removeZero(mul) << " " << "0" << endl;
-    return 0;
+    cout << endl;
 }
