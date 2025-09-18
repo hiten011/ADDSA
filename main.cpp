@@ -57,10 +57,10 @@ string wrongCode(string &n1, string &n2, int base)
     string ans = "0";
     while (idx1 >= 0 || idx2 >= 0)
     {
-        temp1 = getInt(n1[idx1]);
+        int temp1 = getInt(n1[idx1]);
         idx1--;
 
-        temp2 = getInt(n2[idx2]);
+        int temp2 = getInt(n2[idx2]);
         idx2--;
 
         int ps = temp1 + temp2 + carry;
