@@ -238,7 +238,7 @@ int main() {
 
         if (comand[0] == 'A') {
             tree.insert(stoi(comand.substr(1)));
-        } else{
+        } else if (comand[0] == 'D'){
             tree.remove(stoi(comand.substr(1)));
         }
 
@@ -249,7 +249,7 @@ int main() {
         } else if (fin == "POST") {
             tree.postOrder(nullptr, true);
             break;
-        } else {
+        } else if (fin == "IN") {
             tree.inOrder(nullptr, true);
             break;
         }
