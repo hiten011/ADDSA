@@ -232,8 +232,7 @@ class AVLTree {
 
 int main() {
     AVLTree tree;
-    int n; cin >> n;
-    while (n--) {
+    while (true) {
         string comand;
         cin >> comand;
 
@@ -242,15 +241,18 @@ int main() {
         } else{
             tree.remove(stoi(comand.substr(1)));
         }
-    }
 
-    string fin; cin >> fin;
-    if (fin == "PRE") {
-        tree.preOrder(nullptr, true);
-    } else if (fin == "POST") {
-        tree.postOrder(nullptr, true);
-    } else {
-        tree.inOrder(nullptr, true);
+        string fin = comand;
+        if (fin == "PRE") {
+            tree.preOrder(nullptr, true);
+            break;
+        } else if (fin == "POST") {
+            tree.postOrder(nullptr, true);
+            break;
+        } else {
+            tree.inOrder(nullptr, true);
+            break;
+        }
     }
 
     cout << endl;
