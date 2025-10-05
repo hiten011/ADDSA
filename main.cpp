@@ -178,8 +178,11 @@ int main()
     pq.push({0, {-1, 0}});
 
     while (!pq.empty()) {
-        auto [cost, temp] = pq.top();
-        auto [par, dest] = temp;
+        auto top = pq.top();    
+        int cost = top.first;   
+        auto temp = top.second; 
+        int par = temp.first;   
+        int dest = temp.second;
 
         pq.pop();
 
