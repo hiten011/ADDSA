@@ -1,83 +1,83 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-vector<string> getAdj(string &str) {
-    str += ",";
-    vector<string> vec;
-    string prev = "";
-    for (char c : str)
-    {
-        if (c == ',')
-        {
-            vec.push_back(prev);
-            prev = "";
-            continue;
+class customMap {
+    public:
+        customMap() {
+            // intialise the map
+            map = vector<string>(26, "");
         }
 
-        prev += c;
-    }
+        void insert(string s) { // insertion
+            if (search(s, hash(s[s.size() - 1])) != -1) return;
+            insert(s, hash(s[s.size() - 1]));
+        }
 
-    return vec;
-}
+        void deletion(string s) {
+            int idx = search(s, hash(s[s.size() - 1]));
 
-int getScore(char c) {
-    if (isupper(c)) return (int)(c - 'A');
-    return (int)(c - 'a') + 26;
-}
+            if (idx == -1) return; // not found
+            map[idx] = "#";
+        }
+
+        void print() {
+            for (string &s : map) {
+                if (s.empty() || s == "#") continue;
+                cout << s << " ";
+            }
+
+            cout << endl;
+        }
+
+    private:
+        vector<string> map;
+
+        // hash function
+        int hash(char c) {
+            return (int) (c - 'a');
+        }
+
+        // insert function
+        void insert(string &s, int idx) {
+            for (int i = 0; i < 26; i++) {
+                int newIdx = (idx + i) % 26;
+                if (map[newIdx].empty() || map[newIdx] == "#") {
+                    map[newIdx] = s;
+                    break;
+                }
+            }
+        }
+
+        // search function
+        int search(string &s, int idx) {
+            for (int i = 0; i < 26; i++) {
+                int newIdx = (idx + i) % 26;
+                if (map[newIdx] == s) {
+                    return newIdx;
+                }
+            }
+
+            return -1;
+        }
+};
 
 int main() {
-    string c, b, d;
-    cin >> c >> b >> d;
+    customMap us;
+    string str = "#";
+    while (true) {
+        str = "END";
+        cin >> str;
+        
+        if (str == "END") break;
 
-    vector<string> country = getAdj(c);
-    vector<string> build = getAdj(b);
-    vector<string> destroy = getAdj(d);
-
-    int n = destroy.size();
-    int totalCost = 0;
-
-    priority_queue<pair<int, int>> pq;
-
-    // mst
-    vector<bool> visited(n, false);
-    pq.push({0, 0});
-
-    while (!pq.empty()) {
-        pair<int, int> top = pq.top();    
-        int cost = top.first;   
-        int dest = top.second;
-
-        pq.pop();
-
-        if (cost < 0) {
-            // build road
-            if (visited[dest]) {
-                continue;
-            }
-
-            totalCost += abs(cost);
-        } else if (visited[dest]) {
-            totalCost += cost;
-            continue;
-        }
-
-        visited[dest] = true;
-        for (int i = 0; i < n; i++) {
-            if (i == dest || country[dest][i] == '2') continue;
-
-            if (country[dest][i] == '1') {
-                // edge exists
-                pq.push({getScore(destroy[dest][i]), i});
-            }
-            else if (country[dest][i] == '0') {
-                // build edge
-                pq.push({-1 * getScore(build[dest][i]), i});
-            }
-
-            country[i][dest] = '2'; // process road
-            country[dest][i] = '2';   // process road
+        if (str[0] == 'A') {
+            us.insert(str.substr(1));
+        } else {
+            us.deletion(str.substr(1));
         }
     }
 
-    cout << totalCost << endl;
+    us.print();
+
+    return 0;
 }
